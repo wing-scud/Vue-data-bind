@@ -1,5 +1,5 @@
 class Watcher {
-    constructor(obj, callback) {
+    constructor(observer, callback) {
         this.observer = observer;
         this.callback =callback;
         this.observer.addWatcher(this)

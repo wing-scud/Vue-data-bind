@@ -29,7 +29,6 @@ class Compiler {
             }
         })
 
-
     }
     updateDomText(node, value) {
         node.textContent = value;
