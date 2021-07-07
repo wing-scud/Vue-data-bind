@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css"  href="./css/style.css" />
+    </head>
+    <body>
+        <div class="title"> Vue 双向数据绑定</div>
+        <div class="content">
+            <div class="value">
+                {{age}}
+            </div>
+            <div class="input">
+                <input type="number" :value="state.age" oninput="changeValue">
+            </div>
+            <div class="buttons">
+                <button class="custom-button">加一 </button>
+            </div>
+        </div>
+        <script type="module" src="./js/index.js">
+        </script>
+    </body>
+
+</html>
