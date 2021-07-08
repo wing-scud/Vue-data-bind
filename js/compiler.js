@@ -15,7 +15,7 @@ class Compiler {
         const otherStringArray = text.split(matchString)
         this.updateDomText(node, this.data[matchKey],otherStringArray.slice())
         const watch = new Watcher(this.data, matchKey, (oldValue,value) => {
-            console.log("dom update node-new-old", node, oldValue,value)
+            console.log("dom update key-new-old", matchKey,oldValue,value)
             this.updateDomText(node, value,otherStringArray.slice())
         })
         this.domUpdateWatchers.push(watch)

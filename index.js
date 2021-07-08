@@ -1,6 +1,6 @@
-import { observer } from "./Observer.js";
+import { observer } from "./js/Observer.js";
 // import Watcher from "./Watcher.js"
-import Compiler from "./Compiler.js"
+import Compiler from "./js/Compiler.js"
 
 var state = {
     name: "zhangsan",
