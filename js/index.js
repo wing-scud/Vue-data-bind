@@ -1,6 +1,7 @@
-import Observer from "./observer.js";
-import Watcher from "./watcher.js"
-import Compiler from "./compiler.js"
+import { observer } from "./Observer.js";
+// import Watcher from "./Watcher.js"
+import Compiler from "./Compiler.js"
+
 var state = {
     name: "zhangsan",
     age: 18,
@@ -11,10 +12,15 @@ var state = {
 function changeValue(e) {
     const value = e.target.value;
     state.age = value;
+    console.log(state.age)
 }
-const observerStateDeep = new Observer(state, {
+const observerDeep = observer(state, {
     deep: true
 })
-const compiler = new Compiler(document, state);
+// 初始话input
+document.getElementById('age').value= state.age
 
+const compiler = new Compiler(document, state);
+window.changeValue=changeValue;
+window.state=state;
 

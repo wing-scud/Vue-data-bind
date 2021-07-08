@@ -1,46 +1,51 @@
+import Dep from "./Dep.js"
 class Observer {
     constructor(obj, options) {
-        this.options = options || {};
+        this.options = options;
         this.obj = obj;
-        this.watchers = []
-        this._vueDirective(obj)
+        this.dep = new Dep();
+        this._observer(obj)
     }
-    addWatcher(watch){
-        this.watchers.push(watch)
-    }
-    _vueDirective(obj) {
+    _observer(obj) {
         for (let key in obj) {
-            this._observer(obj, key, obj[key])
+            this._defineReactive(obj, key, obj[key]);
         }
     }
-    _objectJudge(obj) {
-        if (typeof obj === "Object" && obj !== null) {
-            return obj;
-        } else {
-            return false;
-        }
-    }
-    _observer(obj, key, value) {
+    _defineReactive(obj, key, value) {
         const observerObj = obj[key];
-        const objectBool = this._objectJudge(observerObj);
-        if (objectBool && this.deep) {
-            obj[key] = new Observer(observerObj, this.options)
-        } else {
-            Object.defineProperty(obj, key, {
-                get() {
-                    return value;
-                },
-                set(newValue) {
-                    value = newValue;
-                    this.notify()
+        this.options.deep && observer(observerObj);
+        const instance = this;
+        Object.defineProperty(obj, key, {
+            get() {
+                if(Dep.target){
+                    instance.dep.addWatcher(Dep.target)
                 }
-            })
-        }
-    }
-    notify() {
-        for (let watcher in this.watchers) {
-            watcher.update()
-        }
+                return value;
+            },
+            set(newValue) {
+                value = newValue;
+                instance.dep.notify()
+            }
+        })
+
     }
 }
+function isObject(obj) {
+    if (typeof obj === "object" && obj !== null) {
+        return obj;
+    } else {
+        return false;
+    }
+}
+function observer(obj, options) {
+    if (!isObject(obj) || obj instanceof Node) {
+        return
+    }
+    options || (options = {
+        deep: false,
+    })
+    const ob = new Observer(obj, options)
+    return ob;
+}
 export default Observer;
+export { observer }

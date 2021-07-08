@@ -1,22 +1,37 @@
 <html>
-    <head>
-        <link rel="stylesheet" type="text/css"  href="./css/style.css" />
-    </head>
-    <body>
-        <div class="title"> Vue 双向数据绑定</div>
-        <div class="content">
-            <div class="value">
-                {{age}}
+
+<head>
+    <link rel="stylesheet" type="text/css" href="./css/style.css" />
+</head>
+
+<body>
+    <div class="title"> Vue 双向数据绑定</div>
+    <div class="content">
+        <div class="attributes row">
+            <div class="item">
+                <div class="value">
+                    年龄：{{age}}
+                </div>
+                <div class="input">
+                    <input id="age" type="number" oninput="changeValue(event)">
+                </div>
             </div>
-            <div class="input">
-                <input type="number" :value="state.age" oninput="changeValue">
-            </div>
-            <div class="buttons">
-                <button class="custom-button">加一 </button>
+            <div class="item">
+                <div class="value">
+                    年龄：{{age}}
+                </div>
+                <div class="input">
+                    <input id="age" type="number" oninput="changeValue(event)">
+                </div>
+
             </div>
         </div>
-        <script type="module" src="./js/index.js">
-        </script>
-    </body>
+        <div class="buttons row">
+            <button class="custom-button" onclick="addNumber">加一 </button>
+        </div>
+    </div>
+    <script type="module" src="./js/index.js">
+    </script>
+</body>
 
 </html>

@@ -1,37 +1,44 @@
-import Watcher from "./watcher.js"
+import Watcher from "./Watcher.js"
 
 class Compiler {
     constructor(document, data) {
         this.data = data;
         this.domUpdateWatchers = []
-        const frame = document.createDocumentFragment();
         const body = document.body;
-        this.compileElement(body)
+        const frame = this.compileElement(body);
+        body.appendChild(frame)
     }
-    compileText(node, key) {
-        this.updateDomText(node, this.data[key])
-        const watch = new Watcher(this.data[key], (value, oldValue) => {
-            console.log("dom update node-new-old", node, value, oldValue)
-            this.updateDomText(node, value)
+    compileText(node, regResults) {
+        const matchString=regResults[0]; // {{age}}
+        const matchKey=regResults[1] // age
+        const text = node.textContent;
+        const otherStringArray = text.split(matchString)
+        this.updateDomText(node, this.data[matchKey],otherStringArray.slice())
+        const watch = new Watcher(this.data, matchKey, (oldValue,value) => {
+            console.log("dom update node-new-old", node, oldValue,value)
+            this.updateDomText(node, value,otherStringArray.slice())
         })
         this.domUpdateWatchers.push(watch)
     }
     compileElement(element) {
+        const frame = document.createDocumentFragment();
         const childNodes = element.childNodes;
         const reg = /\{\{(.*)\}\}/;
-        childNodes.forEach((node) => {
+        Array.from(childNodes).forEach((node) => {
             const text = node.textContent;
             if (this.isTextNode(node) && reg.test(text)) {
-                this.compileText(node, reg.exec(text)[1])
+                this.compileText(node,reg.exec(text))
             }
             if (node.childNodes && node.childNodes.length) {
-                this.compileElement(node);  // 继续递归遍历子节点
+                node.appendChild(this.compileElement(node));  // 继续递归遍历子节点
             }
+            frame.appendChild(node)
         })
-
+        return frame;
     }
-    updateDomText(node, value) {
-        node.textContent = value;
+    updateDomText(node, value,otherStringArray) {
+        otherStringArray.splice(1,0,value)
+        node.textContent = otherStringArray.join(" ");
     }
     isTextNode(node) {
         if (node.nodeType === Node.TEXT_NODE) {

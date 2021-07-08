@@ -21,14 +21,27 @@ html,body{
     height: 90vh;
     font-size: 1rem;
 }
-.value{
+.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+.item {
+    margin : 10px 10px;
+}
+.attributes {
     width:100%;
+    min-height: 200px;
+    padding: 20px 50px;
+}
+.value{
+    width:150px;
     height:30px;
     color:black;
     font-size: 1.25rem;
 }
 .input{
-    width:100px;
     height:30px;
 }
 .buttons{
