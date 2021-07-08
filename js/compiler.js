@@ -9,14 +9,19 @@ class Compiler {
         body.appendChild(frame)
     }
     compileText(node, regResults) {
-        const matchString=regResults[0]; // {{age}}
-        const matchKey=regResults[1] // age
+        const matchString = regResults[0]; // {{age}}
+        const matchKey = regResults[1] // age
         const text = node.textContent;
-        const otherStringArray = text.split(matchString)
-        this.updateDomText(node, this.data[matchKey],otherStringArray.slice())
-        const watch = new Watcher(this.data, matchKey, (oldValue,value) => {
-            console.log("dom update key-new-old", matchKey,oldValue,value)
-            this.updateDomText(node, value,otherStringArray.slice())
+        const otherStringArray = text.split(matchString);
+        // 针对state.name 深度获取属性,进行处理,得到属性值
+        const {deepObj,deepKey} = getDeepObj(this.data, matchKey)
+        this.updateDomText(node, deepObj[deepKey], otherStringArray.slice())
+        /**
+         * 添加视图更新的订阅者
+         */
+        const watch = new Watcher(deepObj, deepKey, {deep:false},(oldValue, value) => {
+            console.log("dom update key-new-old", node, deepKey, oldValue, value)
+            this.updateDomText(node, value, otherStringArray.slice())
         })
         this.domUpdateWatchers.push(watch)
     }
@@ -27,7 +32,7 @@ class Compiler {
         Array.from(childNodes).forEach((node) => {
             const text = node.textContent;
             if (this.isTextNode(node) && reg.test(text)) {
-                this.compileText(node,reg.exec(text))
+                this.compileText(node, reg.exec(text))
             }
             if (node.childNodes && node.childNodes.length) {
                 node.appendChild(this.compileElement(node));  // 继续递归遍历子节点
@@ -36,8 +41,8 @@ class Compiler {
         })
         return frame;
     }
-    updateDomText(node, value,otherStringArray) {
-        otherStringArray.splice(1,0,value)
+    updateDomText(node, value, otherStringArray) {
+        otherStringArray.splice(1, 0, value)
         node.textContent = otherStringArray.join(" ");
     }
     isTextNode(node) {
@@ -49,5 +54,15 @@ class Compiler {
     }
 
 
+}
+function getDeepObj(obj, matchKey) {
+    const keys = matchKey.split(".");
+    const deepKeys = keys.slice(0, keys.length - 1)
+    let deepObj = obj;
+    const deepKey= keys[keys.length-1]
+    deepKeys.forEach((key) => {
+        deepObj = deepObj[key];
+    })
+    return {deepObj,deepKey};
 }
 export default Compiler

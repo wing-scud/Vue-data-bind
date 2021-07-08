@@ -1,5 +1,5 @@
 import Dep from "./Dep.js";
-
+import {isObject} from "./Observer.js"
 class Watcher {
     /**
      * 1. 将该自身添加到消息订阅器中
@@ -8,11 +8,19 @@ class Watcher {
      *  2. 构造时，初始化，储存value,作为oldValue
      *     发生更新时，运行run(),拿到新值，做处理
      */
-    constructor(data, key, callback) {
+    constructor(data, key,options, callback) {
         this.data = data;
         this.key = key;
+        this.options =options || {};
         this.value = this.init();
         this.callback = callback;
+    }
+    /**
+     * 什么时候增加消息调度中心
+     * @param {*} dep 
+     */
+    addDep(dep) {
+        dep.addWatcher(this)
     }
     update() {
         this.run()
@@ -31,8 +39,19 @@ class Watcher {
     init() {
         Dep.target = this;
         const value = this.data[this.key];
+        if(this.options.deep){
+            // 递归 value 给每个属性添加watcher
+            deepObj(value)
+        }
         Dep.target = undefined;
         return value;
+    }
+}
+function deepObj(obj){
+    for(let key in obj){
+        if(isObject(obj[key])){
+            deepObj(obj[key])
+        }
     }
 }
 export default Watcher

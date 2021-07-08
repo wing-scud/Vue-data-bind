@@ -1,26 +1,34 @@
 import { observer } from "./js/Observer.js";
 // import Watcher from "./Watcher.js"
 import Compiler from "./js/Compiler.js"
+import Watcher from "./js/Watcher.js";
 
-var state = {
-    name: "zhangsan",
-    age: 18,
-    attributes: {
-        work: "coder"
+var data = {
+    state: {
+        name: "zhangsan",
+        age: 18,
+        sisters: ['one', 'two'],
+        attributes: {
+            work: "coder"
+        }
     }
 }
 function changeValue(e) {
     const value = e.target.value;
-    state.age = value;
-    console.log(state.age)
+    data.state.age = value;
 }
-const observerDeep = observer(state, {
-    deep: true
+const observerData = observer(data)
+new Watcher(data, "state", { deep: true }, (oldValue,newValue) => {
+    console.log("state change", oldValue)
 })
-// 初始话input
-document.getElementById('age').value= state.age
 
-const compiler = new Compiler(document, state);
-window.changeValue=changeValue;
-window.state=state;
+// 初始话input
+document.getElementById('age').value = data.state.age;
+// new Watcher(data.state, "sisters", () => {
+//     console.log('update array')
+// })
+// data.state.sisters.push('three')
+const compiler = new Compiler(document, data);
+window.changeValue = changeValue;
+window.data = data;
 
