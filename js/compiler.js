@@ -1,5 +1,8 @@
 import Watcher from "./Watcher.js"
 
+/**
+ * 检测双大括号语法，监听该属性
+ */
 class Compiler {
     constructor(document, data) {
         this.data = data;
@@ -20,7 +23,7 @@ class Compiler {
          * 添加视图更新的订阅者
          */
         const watch = new Watcher(deepObj, deepKey, {deep:false},(oldValue, value) => {
-            console.log("dom update key-new-old", node, deepKey, oldValue, value)
+            console.log("dom update key-new-old", deepKey, oldValue, value)
             this.updateDomText(node, value, otherStringArray.slice())
         })
         this.domUpdateWatchers.push(watch)

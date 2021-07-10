@@ -13,6 +13,8 @@ class Dep {
         })
     }
     addWatcher(watcher){
+        // array多添加了一个相同watcher ????
+        if((this.subs.findIndex((item)=>item.id===watcher.id))===-1)
         this.subs.push(watcher)
     }
     removeWatcher(watcher){

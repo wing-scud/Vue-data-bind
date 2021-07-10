@@ -7,7 +7,7 @@
 <body>
     <div class="head"> Vue 双向数据绑定</div>
     <div class="content">
-      <span class="title">data内数据:</span>  <span id="data"></span>
+        <span class="title">data内数据:</span> <span id="data"></span>
         <div class="attributes row">
             <div class="item">
                 <div class="value">
@@ -31,13 +31,16 @@
                 深度监听:
             </div>
             <div class="input">
-                <input id="deep" type="checkbox"  onclick="changeDeep(event)">
+                <input id="deep" type="checkbox" onclick="changeDeep(event)">
             </div>
         </div>
         <div class="hand-control row">
-            <button>
-                
+            <button onclick="addSister(event)">
+                数组sisters 增加一项
             </button>
+        </div>
+        <div class="output">
+            <span id="console"></span>
         </div>
     </div>
     </div>

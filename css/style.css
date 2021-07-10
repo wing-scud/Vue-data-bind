@@ -20,6 +20,7 @@ html,body{
     margin: 5vh 20vw;
     height: 90vh;
     font-size: 1.2rem;
+    overflow-y: auto;
 }
 .title {
     height: 40px;
@@ -38,7 +39,7 @@ html,body{
 }
 .attributes {
     width:100%;
-    min-height: 200px;
+    min-height: 100px;
     padding: 20px 50px;
 }
 .value{
@@ -67,4 +68,8 @@ html,body{
 #watchers,td,th{
     border:1px solid black;
     border-collapse: collapse
+}
+.output{
+    height: 250px;
+    overflow-y: auto
 }

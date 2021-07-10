@@ -1,4 +1,5 @@
 var ids=new Set()
+// 创建唯一id
 function createId(){
     const id =Math.random()*1000;
     if(ids.has(id)){
@@ -6,7 +7,10 @@ function createId(){
     }
     return id;
 }
-
+/**
+ * 打印obj
+ * @param {*} obj 
+ */
 function printObj(obj){  
     var spaceCount = 0
   return deepObjString(obj,spaceCount)

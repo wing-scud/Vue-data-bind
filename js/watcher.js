@@ -1,6 +1,6 @@
 import Dep from "./Dep.js";
-import {isObject} from "./Observer.js"
-import {createId }from "./util.js"
+import { isObject } from "./Observer.js"
+import { createId } from "./util.js"
 class Watcher {
     /**
      * 1. 将该自身添加到消息订阅器中
@@ -9,12 +9,12 @@ class Watcher {
      *  2. 构造时，初始化，储存value,作为oldValue
      *     发生更新时，运行run(),拿到新值，做处理
      */
-    constructor(data, key,options, callback) {
+    constructor(data, key, options, callback) {
         this.data = data;
         this.key = key;
-        this.id=createId();
-        this.deps=[]
-        this.options =options || {};
+        this.id = createId();
+        this.deps = []
+        this.options = options || {};
         this.value = this.init();
         this.callback = callback;
     }
@@ -43,22 +43,45 @@ class Watcher {
     init() {
         Dep.target = this;
         const value = this.data[this.key];
-        if(this.options.deep){
+        if (this.options.deep) {
             // 递归 value 给每个属性添加watcher
             deepObj(value)
         }
         Dep.target = undefined;
         return value;
     }
-    destory(){
-        this.deps.forEach((dep)=>dep.removeWatcher(this))
+    destory() {
+        this.deps.forEach((dep) => dep.removeWatcher(this))
     }
 }
-function deepObj(obj){
-    for(let key in obj){
-        if(isObject(obj[key])){
-            deepObj(obj[key])
+function deepObj(obj) {
+    const isArray = Array.isArray(obj)
+    if (isArray) {
+        for (let i = 0; i < obj.length; i++) {
+            deepObj(obj[i])
+        }
+    } else {
+        for (let key in obj) {
+            if (isObject(obj[key])) {
+                deepObj(obj[key])
+            }
         }
     }
 }
 export default Watcher
+
+
+
+var obj={
+    name: "zhangsan",
+    age: 18,
+    sisters: ['one', 'two'],
+    attributes: {
+        work: "coder"
+    }
+}
+Object.defineProperty(obj,"sisters",{
+    get:function(){
+        console.log("get")
+    }
+})

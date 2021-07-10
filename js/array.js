@@ -1,3 +1,6 @@
+/**
+ * 重写array的push pop等方法
+ */
 const  arrayProto =Object.create(Array.prototype);
 const ways= ['push','pop','shift','unshift','slice','sort','reverse'];
 ways.forEach((way)=>{
