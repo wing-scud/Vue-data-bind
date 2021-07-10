@@ -2,7 +2,9 @@ import { observer } from "./js/Observer.js";
 // import Watcher from "./Watcher.js"
 import Compiler from "./js/Compiler.js"
 import Watcher from "./js/Watcher.js";
-
+import {printObj} from "./js/util.js"
+var deep = false;
+var watcher;
 var data = {
     state: {
         name: "zhangsan",
@@ -13,22 +15,39 @@ var data = {
         }
     }
 }
-function changeValue(e) {
+const observerData = observer(data)
+watcher = createWatcher(deep)
+
+
+updateData()
+const compiler = new Compiler(document, data);
+
+function createWatcher(deep) {
+    return new Watcher(data, "state", { deep: deep }, (oldValue, newValue) => {
+        console.log("state change", oldValue);
+    })
+}
+function changeAge(e) {
     const value = e.target.value;
     data.state.age = value;
+    updateData()
 }
-const observerData = observer(data)
-new Watcher(data, "state", { deep: true }, (oldValue,newValue) => {
-    console.log("state change", oldValue)
-})
+function changeDeep(e) {
+    deep = e.target.checked;
+    if (watcher) {
+        watcher.destory();
+    }
+    watcher = createWatcher(deep)
+}
+function changeWork(e) {
+    data.state.attributes.work = e.target.value
+    updateData()
+}
+function updateData(){
+    document.getElementById('data').innerText =printObj(data);
+}
 
-// 初始话input
-document.getElementById('age').value = data.state.age;
-// new Watcher(data.state, "sisters", () => {
-//     console.log('update array')
-// })
-// data.state.sisters.push('three')
-const compiler = new Compiler(document, data);
-window.changeValue = changeValue;
+window.changeAge = changeAge;
 window.data = data;
-
+window.changeWork = changeWork;
+window.changeDeep = changeDeep;

@@ -1,5 +1,6 @@
 import Dep from "./Dep.js";
 import {isObject} from "./Observer.js"
+import {createId }from "./util.js"
 class Watcher {
     /**
      * 1. 将该自身添加到消息订阅器中
@@ -11,6 +12,8 @@ class Watcher {
     constructor(data, key,options, callback) {
         this.data = data;
         this.key = key;
+        this.id=createId();
+        this.deps=[]
         this.options =options || {};
         this.value = this.init();
         this.callback = callback;
@@ -20,6 +23,7 @@ class Watcher {
      * @param {*} dep 
      */
     addDep(dep) {
+        this.deps.push(dep);
         dep.addWatcher(this)
     }
     update() {
@@ -45,6 +49,9 @@ class Watcher {
         }
         Dep.target = undefined;
         return value;
+    }
+    destory(){
+        this.deps.forEach((dep)=>dep.removeWatcher(this))
     }
 }
 function deepObj(obj){

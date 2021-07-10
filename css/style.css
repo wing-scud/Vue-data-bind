@@ -9,7 +9,7 @@ html,body{
     font-size:0.625em;
 }
 
-.title {
+.head {
     height: 40px;
     width:100%;
     text-align: center;
@@ -19,7 +19,13 @@ html,body{
     width:60vw;
     margin: 5vh 20vw;
     height: 90vh;
-    font-size: 1rem;
+    font-size: 1.2rem;
+}
+.title {
+    height: 40px;
+    width:100%;
+    text-align: center;
+    font-size: 1.5rem;
 }
 .row {
     display: flex;
@@ -44,11 +50,8 @@ html,body{
 .input{
     height:30px;
 }
-.buttons{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+.setting{
+    width:100px;
 }
 .custom-button{
     width:auto;
@@ -60,4 +63,8 @@ html,body{
     font-weight: 500;
     color:white;
     background-color: #03a9f4;
+}
+#watchers,td,th{
+    border:1px solid black;
+    border-collapse: collapse
 }

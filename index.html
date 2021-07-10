@@ -5,30 +5,41 @@
 </head>
 
 <body>
-    <div class="title"> Vue 双向数据绑定</div>
+    <div class="head"> Vue 双向数据绑定</div>
     <div class="content">
+      <span class="title">data内数据:</span>  <span id="data"></span>
         <div class="attributes row">
             <div class="item">
                 <div class="value">
                     年龄：{{state.age}}
                 </div>
                 <div class="input">
-                    <input id="age" type="number" oninput="changeValue(event)">
+                    <input id="age" type="number" value="18" oninput="changeAge(event)">
                 </div>
             </div>
-            <!-- <div class="item">
+            <div class="item">
                 <div class="value">
-                    年龄：{{state.age}}
+                    工作{{state.attributes.work}}
                 </div>
                 <div class="input">
-                    <input id="age" type="number" oninput="changeValue(event)">
+                    <input id="work" type="text" oninput="changeWork(event)">
                 </div>
-
-            </div> -->
+            </div>
         </div>
-        <div class="buttons row">
-            <button class="custom-button" onclick="addNumber">加一 </button>
+        <div class="setting row">
+            <div class="value">
+                深度监听:
+            </div>
+            <div class="input">
+                <input id="deep" type="checkbox"  onclick="changeDeep(event)">
+            </div>
         </div>
+        <div class="hand-control row">
+            <button>
+                
+            </button>
+        </div>
+    </div>
     </div>
     <script type="module" src="./index.js">
     </script>
